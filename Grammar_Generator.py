@@ -1,7 +1,7 @@
 # Author - Ranjith Dhanaraj
 # Prefunctory understanding of tracery is required to understand 
-# grammar generation
-# Transitive verbs were manually edited to enahnce the sentence structure.
+# grammar generation .Transitive verbs were manually edited to 
+# enahnce the sentence structure. 
 
 import pandas as pd
 
@@ -26,26 +26,32 @@ countries = list(city_data.iloc[:, 1])
 
 # Tracery grammar begins
 output.write("{\n")
+# Creating prefix and suffix nodes. 
+# Prefix contains the characters and transitive verbs.
+# Suffix contains the location of the encounter.
 output.write("\"origin\" : [\"#prefix#. #suffix#\"],\n")
 output.write("\n")
 
+# Suffix node definition.
 output.write("\"suffix\" : [\"They first encountered each other in the city of #location#\"],\n")
 output.write("\n")
 
 output.write("\"location\" : [\n")
 for i, location in enumerate(cities):
-    temp = cities[i] + ", " + countries[i]
+    # Combining the name of the city with the country.
+    # Eg. Dublin, Ireland.
+    complete_location = cities[i] + ", " + countries[i]
     if (i < len(cities) - 1):
-        output.write("\"" + temp + ".\", ")
+        output.write("\"" + complete_location + ".\", ")
     else:
-        output.write("\"" + temp + ".\"],")
+        output.write("\"" + complete_location + ".\"],")
     output.write("\n")
 output.write("\n\n")
 
-
+# Preifx node definition.
 output.write("\"prefix\" : [\n")
 
-# Generating different non-terminal nodes for 'origin'
+# Generating different non-terminal nodes for 'prefix'
 for i, val in enumerate(crude_action):
     if(i < len(crude_action) - 1):
         output.write("\t\"#" + val + "#\",")
@@ -73,7 +79,7 @@ for i, val in enumerate(crude_action):
         output.write("\n\"action_" + str(i) + "\" : [\"" + action[i] + "\"]")
     output.write("\n\n")
 
-output.write("\n\n")
+output.write("\n")
 
 output.write("}")
 output.close()
