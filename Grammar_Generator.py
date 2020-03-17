@@ -6,7 +6,7 @@
 import pandas as pd
 
 # File Operations
-output = open("19200041_Ranjith_Dhanaraj_Grammar.txt", "w+")
+output = open("Grammar.txt", "w+", encoding="utf-8")
 
 # Reading the dataset
 superheroes_data = pd.read_excel("Veale's superheroes.xlsx", index_col = False)
@@ -26,7 +26,24 @@ countries = list(city_data.iloc[:, 1])
 
 # Tracery grammar begins
 output.write("{\n")
-output.write("\"origin\" : [\n")
+output.write("\"origin\" : [\"#prefix#. #suffix#\"],\n")
+output.write("\n")
+
+output.write("\"suffix\" : [\"They first encountered each other in the city of #location#\"],\n")
+output.write("\n")
+
+output.write("\"location\" : [\n")
+for i, location in enumerate(cities):
+    temp = cities[i] + ", " + countries[i]
+    if (i < len(cities) - 1):
+        output.write("\"" + temp + ".\", ")
+    else:
+        output.write("\"" + temp + ".\"],")
+    output.write("\n")
+output.write("\n\n")
+
+
+output.write("\"prefix\" : [\n")
 
 # Generating different non-terminal nodes for 'origin'
 for i, val in enumerate(crude_action):
@@ -55,6 +72,8 @@ for i, val in enumerate(crude_action):
         output.write("\n\"supervillian_" + str(i) + "\" : [\"" + supervillian[i] + "\"],")
         output.write("\n\"action_" + str(i) + "\" : [\"" + action[i] + "\"]")
     output.write("\n\n")
+
+output.write("\n\n")
 
 output.write("}")
 output.close()
